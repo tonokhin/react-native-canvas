@@ -1,4 +1,5 @@
 import {webviewTarget, webviewProperties, webviewMethods} from './webview-binders';
+import {Image} from './Image';
 
 @webviewTarget('context2D')
 @webviewProperties({
@@ -63,6 +64,23 @@ import {webviewTarget, webviewProperties, webviewMethods} from './webview-binder
 export default class CanvasRenderingContext2D {
   constructor(canvas) {
     this.canvas = canvas;
+  }
+
+  loadAndDrawImages(urls) {
+    return new Promise((resolve, reject) => {
+      let loadedImages = 0;
+      const numImages = urls.length;
+      urls.forEach(url => {
+        const img = new Image(this.canvas);
+        img.src = url;
+        img.addEventListener('load', () => {
+          this.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+          if (++loadedImages >= numImages) {
+            resolve();
+          }
+        });
+      });
+    })
   }
 
   postMessage(message) {
