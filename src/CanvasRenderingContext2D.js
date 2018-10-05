@@ -1,5 +1,5 @@
 import {webviewTarget, webviewProperties, webviewMethods} from './webview-binders';
-import {Image} from './Image';
+import Image from './Image';
 
 @webviewTarget('context2D')
 @webviewProperties({
